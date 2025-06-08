@@ -15,6 +15,7 @@ def dias_no_mes(ANO, MES):
     else: 
         return 30
 def desenha_planner(ANO, MES):
+    MAX_TAREFAS_VISIVEIS = 3
     if ANO!=2025:
         print('No momento, apenas a versão de 2025 está disponível.')
         return
@@ -34,7 +35,7 @@ def desenha_planner(ANO, MES):
 
     dia = 1
     while dia <= dias_mes:
-        linha_dias, linhas_tarefas = [], [[] for _ in range(3)]
+        linha_dias, linhas_tarefas = [], [[] for _ in range(MAX_TAREFAS_VISIVEIS)]
         for i in range(7):
             if dia == 1 and i<inicio:
                 linha_dias.append(" " * largura)
@@ -44,16 +45,13 @@ def desenha_planner(ANO, MES):
                 linha_dias.append(f'{dia} '.rjust(largura))
                 lista = tarefas.get(dia, [])
 
-                for j in range(3):
-                    if j == 2 and len(lista) > 3:
-                        # + de duas tarefas (...)
+                for j in range(MAX_TAREFAS_VISIVEIS):
+                    if j == MAX_TAREFAS_VISIVEIS-1 and len(lista) > MAX_TAREFAS_VISIVEIS:
                         linhas_tarefas[j].append("...".center(largura))
                     elif j < len(lista):
-                        # tarefa abrev
-                        tarefa = (" " + lista[j][:largura-1]).ljust(largura)
+                        tarefa = (" " + lista[j][:largura-1]).ljust(largura) # tarefa abrev
                         linhas_tarefas[j].append(tarefa)
                     else:
-                        # linha vazia
                         linhas_tarefas[j].append(" " * largura)
                 dia+=1
             else:
